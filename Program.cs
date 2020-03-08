@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -18,12 +19,24 @@ namespace Collections
             // Hashtable();
             // GenericCollections();
 
-            TestGenerics();
-            DisctionaryCollection();
+            // TestGenerics();
+            // DisctionaryCollection();
+            // TestCostumers();
+            TestComparable();
 
-            TestCostumers();
 
+        }
 
+        private static void TestComparable()
+        {
+            int a;
+            var s1 = new Student { Id = 121, Name = "S1", Marks = 11.14f, Class = 1 };
+            var s2 = new Student { Id = 22, Name = "S2", Marks = 22.24f, Class = 2 };
+            var s3 = new Student { Id = 321, Name = "S3", Marks = 33.34f, Class = 3 };
+            var s4 = new Student { Id = 93, Name = "S4", Marks = 44.44f, Class = 4 };
+            var students = new List<Student> { s1, s2, s3, s4 };
+            students.Sort();
+            PrintCollection(students);
         }
 
         private static void TestCostumers()
@@ -218,6 +231,26 @@ namespace Collections
         public override string ToString()
         {
             return $"\nID: {this.Id}, name: {this.Name}";
+        }
+    }
+
+    public class Student : IComparable<Student>
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Class { get; set; }
+        public float Marks { get; set; }
+
+        public int CompareTo([AllowNull] Student other)
+        {
+            if (this.Id > other.Id) return 1;
+            if (this.Id < other.Id) return -1;
+            return 0;
+        }
+
+        public override string ToString()
+        {
+            return $"\nID: {this.Id}, name: {this.Name}, class: {this.Class}, marks: {this.Marks}";
         }
     }
 }
