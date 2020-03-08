@@ -34,7 +34,11 @@ namespace Collections
             var s3 = new Student { Id = 321, Name = "S3", Marks = 3.34f, Class = 3 };
             var s4 = new Student { Id = 93, Name = "S4", Marks = 44.44f, Class = 4 };
             var students = new List<Student> { s1, s2, s3, s4 };
-            students.Sort(new CompareStudent());
+            // students.Sort();
+            // students.Sort(new CompareStudent());
+            // students.Sort(1, 3, new CompareStudent());
+            students.Sort(delegate (Student a, Student b) { return a.Id.CompareTo(b.Id); });
+            students.Sort((a, b) => a.Id.CompareTo(b.Id));
             PrintCollection(students);
         }
 
