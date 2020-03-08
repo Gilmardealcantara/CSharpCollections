@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Collections
@@ -22,7 +21,37 @@ namespace Collections
             // TestGenerics();
             // DisctionaryCollection();
             // TestCostumers();
-            TestComparable();
+            // TestComparable();
+            TestIEnumberable();
+
+
+        }
+
+        private static void TestIEnumberable()
+        {
+            /* 
+                IEnumerable
+                IEnumerable
+                    - ICollection
+                        - IList
+                        - IDictionary
+            */
+            var organization = new Organization();
+            var e1 = new Employee { Id = 121, Name = "S1", Salary = 11.14, Job = "develop" };
+            var e2 = new Employee { Id = 22, Name = "S2", Salary = 2.24, Job = "manager" };
+            var e3 = new Employee { Id = 321, Name = "S3", Salary = 3.34, Job = "dba" };
+            var e4 = new Employee { Id = 93, Name = "S4", Salary = 44.44, Job = "develop" };
+
+            organization.Add(e1);
+            organization.Add(e2);
+            organization.Add(e3);
+            organization.Add(e4);
+            foreach (var item in organization)
+                Console.Write(item + ", ");
+            Console.WriteLine();
+            for (var i = 0; i < organization.Count; i++)
+                Console.Write(organization[i] + ", ");
+            Console.WriteLine();
 
 
         }
@@ -251,10 +280,7 @@ namespace Collections
             return 0;
         }
 
-        public override string ToString()
-        {
-            return $"\nID: {this.Id}, name: {this.Name}, class: {this.Class}, marks: {this.Marks}";
-        }
+        public override string ToString() => $"\nID: {this.Id}, name: {this.Name}, class: {this.Class}, marks: {this.Marks}";
     }
 
     public class CompareStudent : IComparer<Student>
@@ -264,6 +290,60 @@ namespace Collections
             if (x.Marks > y.Marks) return 1;
             if (x.Marks < y.Marks) return -1;
             return 0;
+        }
+    }
+
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Job { get; set; }
+        public double Salary { get; set; }
+        public override string ToString() => $"\nID: {this.Id}, name: {this.Name}, salay: {this.Salary}, job: {this.Job}";
+    }
+
+    public class Organization : IEnumerable
+    {
+        List<Employee> _employees = new List<Employee>();
+        public int Count { get { return _employees.Count; } }
+        public Employee this[int index] { get { return _employees[index]; } }
+
+        public void Add(Employee emp)
+        {
+            _employees.Add(emp);
+        }
+        public IEnumerator GetEnumerator()
+        {
+            // return _employees.GetEnumerator();
+            return new OrganizationEnumerator(this);
+        }
+    }
+
+    public class OrganizationEnumerator : IEnumerator
+    {
+        Organization _orgColl;
+        int _currentIndex;
+        Employee _currnetEmployee;
+
+        public OrganizationEnumerator(Organization org)
+        {
+            _orgColl = org;
+            _currentIndex = -1;
+        }
+
+        public object Current => _currnetEmployee;
+
+        public bool MoveNext()
+        {
+            if (++_currentIndex >= _orgColl.Count)
+                return false;
+            _currnetEmployee = _orgColl[_currentIndex];
+            return true;
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }
