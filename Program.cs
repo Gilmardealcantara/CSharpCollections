@@ -1,27 +1,93 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Collections
 {
+
     class Program
     {
-
 
         static void Main(string[] args)
         {
             /* Collection: */
             // DynamicArray();
             // NonGenericCollection();
-            Hashtable();
+            // Hashtable();
+            // GenericCollections();
+
+            TestGenerics();
+            DisctionaryCollection();
+
+            TestCostumers();
+
+
+        }
+
+        private static void TestCostumers()
+        {
+            var customers = new List<Customer>();
+            var c1 = new Customer { Id = 1, Name = "C1" };
+            var c2 = new Customer { Id = 2, Name = "C2" };
+            var c3 = new Customer { Id = 3, Name = "C3" };
+            var c4 = new Customer { Id = 4, Name = "C4" };
+            customers.Add(c1); customers.Add(c2); customers.Add(c3); customers.Add(c4);
+            PrintCollection(customers);
+
+        }
+
+        private static void DisctionaryCollection()
+        {
+            /* Hash table generic*/
+            var dt = new Dictionary<string, object>();
+            dt.Add("ID", 1);
+            dt.Add("name", "Gilmar");
+            dt.Add("age", 18);
+            dt.Add("phone", "31123423");
+            foreach (string key in dt.Keys)
+                Console.WriteLine(key + ": " + dt[key]);
+        }
+
+        private static void TestGenerics()
+        {
+            // Generic1 obj = new Generic1();
+            // Console.WriteLine(obj.Compare(1, 1));
+            // Console.WriteLine(obj.Compare<float>(1.0f, 1.0f));
+
+            // Generic2<int> obj = new Generic2<int>();
+            // obj.Add(1, 2); obj.Sub(1, 2); obj.Mult(1, 2); obj.Div(1, 2);
+
+
+            // Console.WriteLine(obj.Compare("true", true));
+        }
+
+        private static void GenericCollections()
+        {
+            /*
+                System.Collections.Generic;
+                Array: Type Safe + Fixed Lenght
+                Collections: Auto Resizing + not Type safe
+                => Generic Collections: Type save and auto Resizing
+            */
+            List<int> li = new List<int>();
+            li.Add(1); li.Add(2); li.Add(3); li.Add(4);
+            PrintCollection(li);
+            li.Insert(2, 10);
+            PrintCollection(li);
+            li.RemoveAt(2);
+            li.Remove(1);
+            PrintCollection(li);
+
+
         }
 
         private static void Hashtable()
         {
             /*
                 Array Collection: key/value Combination
-                1010/
+                - no type safe
             */
             Hashtable ht = new Hashtable();
             ht.Add("ID", 1);
@@ -78,7 +144,7 @@ namespace Collections
         static void PrintCollection(ICollection collection)
         {
             foreach (var item in collection)
-                Console.Write(item + ",");
+                Console.Write(item + ", ");
             Console.WriteLine();
 
         }
@@ -97,6 +163,61 @@ namespace Collections
             Array.Resize(ref arr, 10); // create a new array
             PrintCollection(arr);
             ShowMemoryAddr(arr);
+
+        }
+    }
+
+
+    public class Generic1
+    {
+        /* Sobrecarfa/Overload */
+        // public bool Compare(int a, int b) => a == b;
+        // public bool Compare(float a, float b) => a == b;
+        // public bool Compare(string a, string b) => a == b;
+
+        /* Use Object type => Is not Type safe => box and unboxing operation*/
+        // public bool Compare(object a, object b) => a.Equals(b);
+
+        /* Use Generics*/
+        public bool Compare<T>(T a, T b) => a.Equals(b);
+    }
+    public class Generic2<T>
+    {
+        /*dynamic defines types in exec time, is possoble use aritimetic operations*/
+        public void Add(T a, T b)
+        {
+            dynamic da = a;
+            dynamic db = b;
+            Console.WriteLine(da + db);
+        }
+        public void Sub(T a, T b)
+        {
+            dynamic da = a;
+            dynamic db = b;
+            Console.WriteLine(da - db);
+        }
+        public void Mult(T a, T b)
+        {
+            dynamic da = a;
+            dynamic db = b;
+            Console.WriteLine(da * db);
+        }
+        public void Div(T a, T b)
+        {
+            dynamic da = a;
+            dynamic db = b;
+            Console.WriteLine(da / db);
+        }
+    }
+
+    public class Customer
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return $"\nID: {this.Id}, name: {this.Name}";
         }
     }
 }
