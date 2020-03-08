@@ -29,13 +29,12 @@ namespace Collections
 
         private static void TestComparable()
         {
-            int a;
             var s1 = new Student { Id = 121, Name = "S1", Marks = 11.14f, Class = 1 };
-            var s2 = new Student { Id = 22, Name = "S2", Marks = 22.24f, Class = 2 };
-            var s3 = new Student { Id = 321, Name = "S3", Marks = 33.34f, Class = 3 };
+            var s2 = new Student { Id = 22, Name = "S2", Marks = 2.24f, Class = 2 };
+            var s3 = new Student { Id = 321, Name = "S3", Marks = 3.34f, Class = 3 };
             var s4 = new Student { Id = 93, Name = "S4", Marks = 44.44f, Class = 4 };
             var students = new List<Student> { s1, s2, s3, s4 };
-            students.Sort();
+            students.Sort(new CompareStudent());
             PrintCollection(students);
         }
 
@@ -251,6 +250,16 @@ namespace Collections
         public override string ToString()
         {
             return $"\nID: {this.Id}, name: {this.Name}, class: {this.Class}, marks: {this.Marks}";
+        }
+    }
+
+    public class CompareStudent : IComparer<Student>
+    {
+        public int Compare([AllowNull] Student x, [AllowNull] Student y)
+        {
+            if (x.Marks > y.Marks) return 1;
+            if (x.Marks < y.Marks) return -1;
+            return 0;
         }
     }
 }
