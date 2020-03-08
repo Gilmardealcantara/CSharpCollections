@@ -13,7 +13,28 @@ namespace Collections
         {
             /* Collection: */
             // DynamicArray();
-            NonGenericCollection();
+            // NonGenericCollection();
+            Hashtable();
+        }
+
+        private static void Hashtable()
+        {
+            /*
+                Array Collection: key/value Combination
+                1010/
+            */
+            Hashtable ht = new Hashtable();
+            ht.Add("ID", 1);
+            ht.Add("name", "Gilmar");
+            ht.Add("age", 18);
+            ht.Add("phone", "31123423");
+
+            Console.WriteLine("Hello".GetHashCode());
+            Console.WriteLine(ht.GetHashCode());
+
+            foreach (var key in ht.Keys)
+                Console.WriteLine(key + ": " + ht[key]);
+
         }
 
         private static void NonGenericCollection()
